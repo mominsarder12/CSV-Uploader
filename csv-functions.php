@@ -15,9 +15,9 @@
  * Domain Path:       /languages
  */
 
-//  if(!defined('ABSPATH')){
-//     exit;
-//  }
+if (!defined('ABSPATH')) {
+    exit;
+}
 define('MS_CU_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
 
 add_shortcode('csv_data_uploader', 'ms_csv_data_uploader_form');
@@ -175,4 +175,21 @@ function ms_tdbc_export_data() {
         fclose($output);
         exit();
     }
+}
+
+/*########################################
+widget plugin files start here
+#########################################*/
+//enqueue assets
+add_action('admin_enqueue_scripts', 'mcw_add_admin_scripts');
+function mcw_add_admin_scripts() {
+    wp_enqueue_style('mcw_admin_style_css', plugin_dir_url(__FILE__) . 'assets/mcw_admin-style.css', array(), '1.0.0', 'all');
+    wp_enqueue_script('mcw_admin_script_js', plugin_dir_url(__FILE__) . 'assets/mcw_admin-script.js', array('jquery'), '1.0.0');
+}
+
+//need to create widget for this
+add_action('widgets_init', 'mcw_custom_widgets');
+include_once plugin_dir_path(__FILE__) . "widgets/My_Form_Widget.php";
+function mcw_custom_widgets() {
+    register_widget('My_Form_Widget');
 }
